@@ -27,8 +27,9 @@
     <div id="alert-box" class="alert"></div>
 
     <form id="activation-form">
-        <input type="text" id="username" placeholder="Введите ваш ник" required autocomplete="off">
-        <input type="password" id="key" placeholder="Введите ключ" required autocomplete="off">
+        <!-- Ограничили ник в 32 символа, а ключ в 64, чтобы избежать длинного спама -->
+        <input type="text" id="username" placeholder="Введите ваш ник" required maxlength="32" autocomplete="off">
+        <input type="password" id="key" placeholder="Введите ключ" required maxlength="64" autocomplete="off">
         <button type="submit" id="submit-btn">Активировать</button>
     </form>
 </div>
@@ -37,6 +38,9 @@
     // ⚠️ НАСТРОЙКА: Вставьте сюда URL вашего вебхука из настроек Discord
     const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1540327789721288854/ajg9HNBZBnzzcej0DjRlmDpiMSQImiwxFs5Ge8WikIOi_easuKLWinEgPp2fFHdmra1s'; 
     const COOLDOWN_SECONDS = 600; // 10 минут
+
+    // Регулярное выражение для базовой фильтрации нецензурных слов на входе
+    const badWordsRegex = /хуй|хуе|хуя|пизд|еба|ёба|бля|сука|гондо|гандо|муда|пидо|пидр|ублю|дроч|залуп/i;
 
     const form = document.getElementById('activation-form');
     const usernameInput = document.getElementById('username');
@@ -77,7 +81,7 @@
         }, 1000);
     }
 
-    // Форматирование секунд в минуты и секунды (например, 09:45)
+    // Форматирование секунд в минуты и секунды (09:45)
     function formatTime(seconds) {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
@@ -96,21 +100,28 @@
         const username = usernameInput.value.trim();
         const key = keyInput.value.trim();
 
+        // Защита от пустых отправлений
         if (!username || !key) return;
+
+        // Фильтрация мата в нике или ключе перед отправкой для защиты сервера
+        if (badWordsRegex.test(username) || badWordsRegex.test(key)) {
+            showAlert('Введенные данные содержат недопустимые слова!', 'error');
+            return;
+        }
 
         submitBtn.disabled = true;
         submitBtn.innerText = 'Проверка...';
 
-        // Красивая карточка с данными для канала Discord
+        // Форматируем красивую карточку-сообщение (Embed) для Discord
         const discordPayload = {
             embeds: [{
                 title: "🔑 Попытка активации ключа",
-                color: 2064197, // Зеленый цвет полоски (#1f8b4d)
+                color: 2064197, // Цвет полоски (зеленый #1f8b4d)
                 fields: [
                     { name: "Ник пользователя", value: username, inline: true },
                     { name: "Введенный ключ", value: `\`\`\`${key}\`\`\`` }
                 ],
-                footer: { text: "Отправлено с сайта активации" },
+                footer: { text: "Отправлено с сайта активации GitHub Pages" },
                 timestamp: new Date().toISOString()
             }]
         };
@@ -127,22 +138,22 @@
                 usernameInput.value = '';
                 keyInput.value = '';
                 
-                // Записываем время успешной отправки для таймера
+                // Запоминаем время отправки для таймера
                 localStorage.setItem('last_key_activation', Math.floor(Date.now() / 1000).toString());
                 blockButton(COOLDOWN_SECONDS);
             } else {
-                showAlert('Произошла ошибка при отправке запроса на активацию, запустите zapret-discord или VPN.', 'error');
+                showAlert('Произошла ошибка, запустите zapret discord или VPN.', 'error');
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Активировать';
             }
         } catch (err) {
-            showAlert('Ошибка сети. Проверьте соединение с интернетом.', 'error');
+            showAlert('Ошибка сети. Проверьте соединение с интернетом и включен ли VPN.', 'error');
             submitBtn.disabled = false;
             submitBtn.innerText = 'Активировать';
         }
     });
 
-    // Запуск проверки при заходе на страницу
+    // Запуск проверки кулдауна при открытии страницы
     checkCooldown();
 </script>
 
