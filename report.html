@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отправить репорт kaycrafter</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h2 {
+            margin-top: 0;
+            color: #2ecc71;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: #121212;
+            border: 2px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            padding: 10px;
+            font-size: 14px;
+            resize: none;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            border-color: #2ecc71;
+            outline: none;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #1f1f1f;
+            color: #2ecc71;
+            border: 2px solid #2ecc71;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-submit:hover:not(:disabled) {
+            background-color: #2ecc71;
+            color: #121212;
+        }
+        .btn-submit:disabled {
+            border-color: #555;
+            color: #555;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+        .error { background-color: #c0392b; color: #fff; display: block; }
+        .success { background-color: #27ae60; color: #fff; display: block; }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #888;
+            text-decoration: none;
+        }
+        .back-link:hover { color: #2ecc71; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Оставить репорт</h2>
+
+    <!-- Блок для уведомлений -->
+    <div id="status-message" class="status"></div>
+
+    <form id="report-form">
+        <textarea id="report-text" placeholder="Опишите вашу проблему" required></textarea>
+        <button type="submit" id="submit-btn" class="btn-submit">Отправить репорт</button>
+    </form>
+
+    <a href="index.html" class="back-link">← Назад на главную</a>
+</div>
+
+<script>
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1539842891856224287/FCC21-N1QJvtMC4m1JXb5tZ16bFwwjZXQhZnJClpGyzZWR80sPifgvXSLH0g0OS68vfW'; 
+    const COOLDOWN_SECONDS = 540;
+
+    const form = document.getElementById('report-form');
+    const textarea = document.getElementById('report-text');
+    const submitBtn = document.getElementById('submit-btn');
+    const statusDiv = document.getElementById('status-message');
+
+    // Функция проверки лимита по времени в localStorage
+    function checkCooldown() {
+        const lastSubmit = localStorage.getItem('last_report_submit');
+        if (lastSubmit) {
+            const timePassed = Math.floor(Date.now() / 1000) - parseInt(lastSubmit);
+            if (timePassed < COOLDOWN_SECONDS) {
+                const timeLeft = COOLDOWN_SECONDS - timePassed;
+                blockButton(timeLeft);
+            }
+        }
+    }
+
+    // Визуальная блокировка кнопки и запуск таймера
+    function blockButton(seconds) {
+        submitBtn.disabled = true;
+        let counter = seconds;
+        
+        showStatus(`Слишком много запросов! Подождите еще ${counter} сек.`, 'error');
+
+        const interval = setInterval(() => {
+            counter--;
+            if (counter <= 0) {
+                clearInterval(interval);
+                submitBtn.disabled = false;
+                statusDiv.style.display = 'none';
+                submitBtn.innerText = 'Отправить репорт';
+            } else {
+                showStatus(`Слишком много запросов! Подождите еще ${counter} сек.`, 'error');
+                submitBtn.innerText = `Подождите (${counter}с)`;
+            }
+        }, 1000);
+    }
+
+    function showStatus(text, type) {
+        statusDiv.innerText = text;
+        statusDiv.className = `status ${type}`;
+        statusDiv.style.display = 'block';
+    }
+
+    // Обработка отправки формы напрямую в Discord
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const text = textarea.value.trim();
+        if (!text) return;
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Отправка...';
+
+        // Формируем красивое Embed-сообщение для Discord
+        const discordPayload = {
+            embeds: [{
+                title: "📌 Новое сообщение (Репорт)",
+                color: 3066993, // Зеленый цвет боковой линии
+                fields: [
+                    { name: "Содержимое репорта", value: text.substring(0, 1024) }
+                ],
+                footer: { text: "Отправлено напрямую с GitHub Pages" },
+                timestamp: new Date().toISOString()
+            }]
+        };
+
+        try {
+            const response = await fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(discordPayload)
+            });
+
+            if (response.ok || response.status === 204) {
+                showStatus('Репорт успешно отправлен в Discord!', 'success');
+                textarea.value = '';
+                // Сохраняем время успешной отправки
+                localStorage.setItem('last_report_submit', Math.floor(Date.now() / 1000).toString());
+                blockButton(COOLDOWN_SECONDS);
+            } else {
+                showStatus('Ошибка сервера Discord при отправке.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Отправить репорт';
+            }
+        } catch (err) {
+            showStatus('Ошибка сети. Проверьте подключение.', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Отправить репорт';
+        }
+    });
+
+    // Проверяем кулдаун при загрузке страницы
+    checkCooldown();
+</script>
+</body>
+</html>
