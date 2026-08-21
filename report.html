@@ -5,117 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Отправить репорт kaycrafter</title>
     <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #1f1f1f;
-            padding: 30px;
-            border-radius: 8px;
-            border: 1px solid #333;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        h2 {
-            margin-top: 0;
-            color: #2ecc71;
-            text-align: center;
-        }
-        textarea {
-            width: 100%;
-            height: 120px;
-            background-color: #121212;
-            border: 2px solid #333;
-            border-radius: 6px;
-            color: #fff;
-            padding: 10px;
-            font-size: 14px;
-            resize: none;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        textarea:focus {
-            border-color: #2ecc71;
-            outline: none;
-        }
-        .btn-submit {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            background-color: #1f1f1f;
-            color: #2ecc71;
-            border: 2px solid #2ecc71;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn-submit:hover:not(:disabled) {
-            background-color: #2ecc71;
-            color: #121212;
-        }
-        .btn-submit:disabled {
-            border-color: #555;
-            color: #555;
-            cursor: not-allowed;
-        }
-        .status {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            font-weight: bold;
-            text-align: center;
-            display: none;
-        }
-        .error { background-color: #c0392b; color: #fff; display: block; }
-        .success { background-color: #27ae60; color: #fff; display: block; }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: #888;
-            text-decoration: none;
-        }
-        .back-link:hover { color: #2ecc71; }
+        body { font-family: Arial, sans-serif; background: #222; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .form-container { background: #333; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; width: 340px; }
+        textarea { width: 100%; height: 120px; background-color: #444; border: 1px solid #555; border-radius: 4px; color: #fff; padding: 12px; font-size: 14px; resize: none; box-sizing: border-box; transition: border-color 0.3s; margin: 10px 0; }
+        textarea:focus { border-color: #28a745; outline: none; }
+        textarea::placeholder { color: #aaa; }
+        button { background: #28a745; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; width: 100%; font-size: 16px; font-weight: bold; margin-top: 10px; transition: background 0.2s; }
+        button:hover:not(:disabled) { background: #218838; }
+        button:disabled { background: #555; color: #aaa; cursor: not-allowed; }
+        .alert { padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 14px; text-align: left; line-height: 1.4; display: none; }
+        .error { background: #dc3545; border-left: 5px solid #bd2130; display: block; }
+        .success { background: #28a745; border-left: 5px solid #1e7e34; display: block; }
+        h2 { margin-top: 0; color: #28a745; }
+        .back-link { display: block; text-align: center; margin-top: 15px; color: #888; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: #28a745; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="form-container">
     <h2>Оставить репорт</h2>
-
-    <!-- Блок для уведомлений -->
-    <div id="status-message" class="status"></div>
+    
+    <!-- Блок вывода уведомлений -->
+    <div id="alert-box" class="alert"></div>
 
     <form id="report-form">
-        <textarea id="report-text" placeholder="Опишите вашу проблему" required></textarea>
-        <button type="submit" id="submit-btn" class="btn-submit">Отправить репорт</button>
+        <!-- Ограничение на 500 символов, чтобы не слали текстовые бомбы -->
+        <textarea id="report-text" placeholder="Опишите вашу проблему" required maxlength="500" autocomplete="off"></textarea>
+        <button type="submit" id="submit-btn">Отправить репорт</button>
     </form>
 
     <a href="index.html" class="back-link">← Назад на главную</a>
 </div>
 
 <script>
+    // ⚠️ НАСТРОЙКА: Вставьте сюда URL вашего вебхука из настроек Discord
     const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1539842891856224287/FCC21-N1QJvtMC4m1JXb5tZ16bFwwjZXQhZnJClpGyzZWR80sPifgvXSLH0g0OS68vfW'; 
-    const COOLDOWN_SECONDS = 540;
+    const COOLDOWN_SECONDS = 540; // 9 минут
+
+    // Регулярное выражение для базовой фильтрации нецензурных слов на входе
+    const badWordsRegex = /хуй|хуе|хуя|пизд|еба|ёба|бля|сука|гондо|гандо|муда|пидо|пидр|ублю|дроч|залуп/i;
 
     const form = document.getElementById('report-form');
     const textarea = document.getElementById('report-text');
     const submitBtn = document.getElementById('submit-btn');
-    const statusDiv = document.getElementById('status-message');
+    const alertBox = document.getElementById('alert-box');
 
-    // Функция проверки лимита по времени в localStorage
+    // Проверка блокировки при загрузке страницы
     function checkCooldown() {
         const lastSubmit = localStorage.getItem('last_report_submit');
         if (lastSubmit) {
@@ -127,50 +63,64 @@
         }
     }
 
-    // Визуальная блокировка кнопки и запуск таймера
+    // Блокировка кнопки и запуск обратного отсчета
     function blockButton(seconds) {
         submitBtn.disabled = true;
         let counter = seconds;
         
-        showStatus(`Слишком много запросов! Подождите еще ${counter} сек.`, 'error');
+        showAlert(`Повторный репорт возможен через ${formatTime(counter)}`, 'error');
 
         const interval = setInterval(() => {
             counter--;
             if (counter <= 0) {
                 clearInterval(interval);
                 submitBtn.disabled = false;
-                statusDiv.style.display = 'none';
+                alertBox.style.display = 'none';
                 submitBtn.innerText = 'Отправить репорт';
             } else {
-                showStatus(`Слишком много запросов! Подождите еще ${counter} сек.`, 'error');
-                submitBtn.innerText = `Подождите (${counter}с)`;
+                showAlert(`Повторный репорт возможен через ${formatTime(counter)}`, 'error');
+                submitBtn.innerText = `Подождите (${formatTime(counter)})`;
             }
         }, 1000);
     }
 
-    function showStatus(text, type) {
-        statusDiv.innerText = text;
-        statusDiv.className = `status ${type}`;
-        statusDiv.style.display = 'block';
+    // Форматирование секунд в минуты и секунды (09:00)
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
-    // Обработка отправки формы напрямую в Discord
+    function showAlert(text, type) {
+        alertBox.innerText = text;
+        alertBox.className = `alert ${type}`;
+    }
+
+    // Отправка формы напрямую в Discord вебхук
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const text = textarea.value.trim();
+
+        // Защита от пустых отправлений
         if (!text) return;
+
+        // Фильтрация мата перед отправкой для защиты сервера
+        if (badWordsRegex.test(text)) {
+            showAlert('Ваше сообщение содержит недопустимые слова!', 'error');
+            return;
+        }
 
         submitBtn.disabled = true;
         submitBtn.innerText = 'Отправка...';
 
-        // Формируем красивое Embed-сообщение для Discord
+        // Форматируем красивую карточку-сообщение (Embed) для Discord
         const discordPayload = {
             embeds: [{
                 title: "📌 Новое сообщение (Репорт)",
-                color: 3066993, // Зеленый цвет боковой линии
+                color: 15158332, // Цвет полоски (красноватый #e74c3c)
                 fields: [
-                    { name: "Содержимое репорта", value: text.substring(0, 1024) }
+                    { name: "Содержимое репорта", value: text }
                 ],
                 footer: { text: "Отправлено напрямую с GitHub Pages" },
                 timestamp: new Date().toISOString()
@@ -185,25 +135,27 @@
             });
 
             if (response.ok || response.status === 204) {
-                showStatus('Репорт успешно отправлен в Discord!', 'success');
+                showAlert('Репорт успешно отправлен в Discord!', 'success');
                 textarea.value = '';
-                // Сохраняем время успешной отправки
+                
+                // Запоминаем время отправки для таймера
                 localStorage.setItem('last_report_submit', Math.floor(Date.now() / 1000).toString());
                 blockButton(COOLDOWN_SECONDS);
             } else {
-                showStatus('Ошибка сервера Discord при отправке.', 'error');
+                showAlert('Произошла ошибка сервера Discord при отправке.', 'error');
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Отправить репорт';
             }
         } catch (err) {
-            showStatus('Ошибка сети. Проверьте подключение.', 'error');
+            showAlert('Ошибка сети. Проверьте соединение с интернетом.', 'error');
             submitBtn.disabled = false;
             submitBtn.innerText = 'Отправить репорт';
         }
     });
 
-    // Проверяем кулдаун при загрузке страницы
+    // Запуск проверки кулдауна при открытии страницы
     checkCooldown();
 </script>
+
 </body>
 </html>
