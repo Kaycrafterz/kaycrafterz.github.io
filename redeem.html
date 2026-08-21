@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Активация Kaycrafter</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #222; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .form-container { background: #333; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; width: 340px; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #555; background: #444; color: #fff; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+        input::placeholder { color: #aaa; }
+        button { background: #28a745; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; width: 100%; font-size: 16px; font-weight: bold; margin-top: 10px; transition: background 0.2s; }
+        button:hover:not(:disabled) { background: #218838; }
+        button:disabled { background: #555; color: #aaa; cursor: not-allowed; }
+        .alert { padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 14px; text-align: left; line-height: 1.4; display: none; }
+        .error { background: #dc3545; border-left: 5px solid #bd2130; display: block; }
+        .success { background: #28a745; border-left: 5px solid #1e7e34; display: block; }
+        h2 { margin-top: 0; color: #28a745; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Активация ключа</h2>
+    
+    <!-- Блок вывода уведомлений -->
+    <div id="alert-box" class="alert"></div>
+
+    <form id="activation-form">
+        <input type="text" id="username" placeholder="Введите ваш ник" required autocomplete="off">
+        <input type="password" id="key" placeholder="Введите ключ" required autocomplete="off">
+        <button type="submit" id="submit-btn">Активировать</button>
+    </form>
+</div>
+
+<script>
+    // ⚠️ НАСТРОЙКА: Вставьте сюда URL вашего вебхука из настроек Discord
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1540327789721288854/ajg9HNBZBnzzcej0DjRlmDpiMSQImiwxFs5Ge8WikIOi_easuKLWinEgPp2fFHdmra1s'; 
+    const COOLDOWN_SECONDS = 600; // 10 минут
+
+    const form = document.getElementById('activation-form');
+    const usernameInput = document.getElementById('username');
+    const keyInput = document.getElementById('key');
+    const submitBtn = document.getElementById('submit-btn');
+    const alertBox = document.getElementById('alert-box');
+
+    // Проверка блокировки при загрузке страницы
+    function checkCooldown() {
+        const lastActivation = localStorage.getItem('last_key_activation');
+        if (lastActivation) {
+            const timePassed = Math.floor(Date.now() / 1000) - parseInt(lastActivation);
+            if (timePassed < COOLDOWN_SECONDS) {
+                const timeLeft = COOLDOWN_SECONDS - timePassed;
+                blockButton(timeLeft);
+            }
+        }
+    }
+
+    // Блокировка кнопки и запуск обратного отсчета
+    function blockButton(seconds) {
+        submitBtn.disabled = true;
+        let counter = seconds;
+        
+        showAlert(`Повторный запрос возможен через ${formatTime(counter)}`, 'error');
+
+        const interval = setInterval(() => {
+            counter--;
+            if (counter <= 0) {
+                clearInterval(interval);
+                submitBtn.disabled = false;
+                alertBox.style.display = 'none';
+                submitBtn.innerText = 'Активировать';
+            } else {
+                showAlert(`Повторный запрос возможен через ${formatTime(counter)}`, 'error');
+                submitBtn.innerText = `Подождите (${formatTime(counter)})`;
+            }
+        }, 1000);
+    }
+
+    // Форматирование секунд в минуты и секунды (например, 09:45)
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function showAlert(text, type) {
+        alertBox.innerText = text;
+        alertBox.className = `alert ${type}`;
+    }
+
+    // Отправка формы напрямую в Discord вебхук
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = usernameInput.value.trim();
+        const key = keyInput.value.trim();
+
+        if (!username || !key) return;
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Проверка...';
+
+        // Красивая карточка с данными для канала Discord
+        const discordPayload = {
+            embeds: [{
+                title: "🔑 Попытка активации ключа",
+                color: 2064197, // Зеленый цвет полоски (#1f8b4d)
+                fields: [
+                    { name: "Ник пользователя", value: username, inline: true },
+                    { name: "Введенный ключ", value: `\`\`\`${key}\`\`\`` }
+                ],
+                footer: { text: "Отправлено с сайта активации" },
+                timestamp: new Date().toISOString()
+            }]
+        };
+
+        try {
+            const response = await fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(discordPayload)
+            });
+
+            if (response.ok || response.status === 204) {
+                showAlert('Запрос на активацию отправлен! Ожидайте подтверждения.', 'success');
+                usernameInput.value = '';
+                keyInput.value = '';
+                
+                // Записываем время успешной отправки для таймера
+                localStorage.setItem('last_key_activation', Math.floor(Date.now() / 1000).toString());
+                blockButton(COOLDOWN_SECONDS);
+            } else {
+                showAlert('Произошла ошибка при отправке запроса на активацию, запустите zapret-discord или VPN.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Активировать';
+            }
+        } catch (err) {
+            showAlert('Ошибка сети. Проверьте соединение с интернетом.', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Активировать';
+        }
+    });
+
+    // Запуск проверки при заходе на страницу
+    checkCooldown();
+</script>
+
+</body>
+</html>
