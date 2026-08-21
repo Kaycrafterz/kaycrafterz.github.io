@@ -135,19 +135,19 @@
             });
 
             if (response.ok || response.status === 204) {
-                showAlert('Репорт успешно отправлен в Discord!', 'success');
+                showAlert('Репорт успешно отправлен!', 'success');
                 textarea.value = '';
                 
                 // Запоминаем время отправки для таймера
                 localStorage.setItem('last_report_submit', Math.floor(Date.now() / 1000).toString());
                 blockButton(COOLDOWN_SECONDS);
             } else {
-                showAlert('Произошла ошибка сервера Discord при отправке.', 'error');
+                showAlert('Произошла ошибка, включите VPN и попробуйте снова.', 'error');
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Отправить репорт';
             }
         } catch (err) {
-            showAlert('Ошибка сети. Проверьте соединение с интернетом.', 'error');
+            showAlert('Ошибка сети. Проверьте соединение с интернетом и включите VPN, если вы из РФ.', 'error');
             submitBtn.disabled = false;
             submitBtn.innerText = 'Отправить репорт';
         }
