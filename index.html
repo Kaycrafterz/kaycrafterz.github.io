@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaycrafter меню</title>
+    <style>
+        /* Стили для всей страницы (тёмный фон) */
+        body {
+            background-color: #121212; /* Глубокий тёмный цвет фона */
+            color: #ffffff;            /* Белый цвет для обычного текста */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Контейнер для кнопок */
+        .button-container {
+            display: flex;
+            gap: 15px; /* Расстояние между кнопками */
+        }
+
+        /* Стили для кнопок-ссылок (зелёный текст) */
+        .php-button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2ecc71;            /* Зелёный цвет текста */
+            text-decoration: none;     /* Убираем подчёркивание ссылки */
+            background-color: #1f1f1f; /* Чуть более светлый тёмный фон для контраста кнопок */
+            border: 2px solid #2ecc71; /* Зелёная рамка */
+            border-radius: 6px;        /* Скругление углов */
+            transition: all 0.3s ease; /* Плавная анимация при наведении */
+        }
+
+        /* Эффект при наведении курсора */
+        .php-button:hover {
+            background-color: #2ecc71; /* Заливка зелёным цветом */
+            color: #121212;            /* Текст становится тёмным для читаемости */
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Выберите</h1>
+    
+    <div class="button-container">
+        <!-- Замените page1.php, page2.php и page3.php на реальные пути к вашим файлам -->
+        <a href="report.html" class="php-button">Кинуть репорт на игрока</a>
+    </div>
+
+</body>
+</html>
