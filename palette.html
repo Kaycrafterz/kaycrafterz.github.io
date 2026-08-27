@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Палитра</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            width: 100%;
+            max-width: 1800px;
+        }
+        .color-card {
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 6px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .swatch {
+            width: 100%;
+            height: 60px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .hex-code {
+            font-size: 12px;
+            font-family: monospace;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>HEX Палитра (256 цветов)</h1>
+    <div class="grid">
+        <div class="color-card">
+            <div class="swatch" style="background-color: #000000;"></div>
+            <div class="hex-code">#000000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #800000;"></div>
+            <div class="hex-code">#800000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #008000;"></div>
+            <div class="hex-code">#008000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #808000;"></div>
+            <div class="hex-code">#808000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #000080;"></div>
+            <div class="hex-code">#000080</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #800080;"></div>
+            <div class="hex-code">#800080</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #008080;"></div>
+            <div class="hex-code">#008080</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #c0c0c0;"></div>
+            <div class="hex-code">#C0C0C0</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #808080;"></div>
+            <div class="hex-code">#808080</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff0000;"></div>
+            <div class="hex-code">#FF0000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00ff00;"></div>
+            <div class="hex-code">#00FF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffff00;"></div>
+            <div class="hex-code">#FFFF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #0000ff;"></div>
+            <div class="hex-code">#0000FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff00ff;"></div>
+            <div class="hex-code">#FF00FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00ffff;"></div>
+            <div class="hex-code">#00FFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffffff;"></div>
+            <div class="hex-code">#FFFFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00005f;"></div>
+            <div class="hex-code">#00005F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #000087;"></div>
+            <div class="hex-code">#000087</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #0000af;"></div>
+            <div class="hex-code">#0000AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #0000d7;"></div>
+            <div class="hex-code">#0000D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #005f00;"></div>
+            <div class="hex-code">#005F00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #005f5f;"></div>
+            <div class="hex-code">#005F5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #005f87;"></div>
+            <div class="hex-code">#005F87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #005faf;"></div>
+            <div class="hex-code">#005FAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #005fd7;"></div>
+            <div class="hex-code">#005FD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #005fff;"></div>
+            <div class="hex-code">#005FFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #008700;"></div>
+            <div class="hex-code">#008700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00875f;"></div>
+            <div class="hex-code">#00875F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #008787;"></div>
+            <div class="hex-code">#008787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #0087af;"></div>
+            <div class="hex-code">#0087AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #0087d7;"></div>
+            <div class="hex-code">#0087D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #0087ff;"></div>
+            <div class="hex-code">#0087FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00af00;"></div>
+            <div class="hex-code">#00AF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00af5f;"></div>
+            <div class="hex-code">#00AF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00af87;"></div>
+            <div class="hex-code">#00AF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00afaf;"></div>
+            <div class="hex-code">#00AFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00afd7;"></div>
+            <div class="hex-code">#00AFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00afff;"></div>
+            <div class="hex-code">#00AFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00d700;"></div>
+            <div class="hex-code">#00D700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00d75f;"></div>
+            <div class="hex-code">#00D75F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00d787;"></div>
+            <div class="hex-code">#00D787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00d7af;"></div>
+            <div class="hex-code">#00D7AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00d7d7;"></div>
+            <div class="hex-code">#00D7D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00d7ff;"></div>
+            <div class="hex-code">#00D7FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00ff5f;"></div>
+            <div class="hex-code">#00FF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00ff87;"></div>
+            <div class="hex-code">#00FF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00ffaf;"></div>
+            <div class="hex-code">#00FFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #00ffd7;"></div>
+            <div class="hex-code">#00FFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f0000;"></div>
+            <div class="hex-code">#5F0000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f005f;"></div>
+            <div class="hex-code">#5F005F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f0087;"></div>
+            <div class="hex-code">#5F0087</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f00af;"></div>
+            <div class="hex-code">#5F00AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f00d7;"></div>
+            <div class="hex-code">#5F00D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f00ff;"></div>
+            <div class="hex-code">#5F00FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f5f00;"></div>
+            <div class="hex-code">#5F5F00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f5f5f;"></div>
+            <div class="hex-code">#5F5F5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f5f87;"></div>
+            <div class="hex-code">#5F5F87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f5faf;"></div>
+            <div class="hex-code">#5F5FAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f5fd7;"></div>
+            <div class="hex-code">#5F5FD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f5fff;"></div>
+            <div class="hex-code">#5F5FFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f8700;"></div>
+            <div class="hex-code">#5F8700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f875f;"></div>
+            <div class="hex-code">#5F875F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f8787;"></div>
+            <div class="hex-code">#5F8787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f87af;"></div>
+            <div class="hex-code">#5F87AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f87d7;"></div>
+            <div class="hex-code">#5F87D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5f87ff;"></div>
+            <div class="hex-code">#5F87FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5faf00;"></div>
+            <div class="hex-code">#5FAF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5faf5f;"></div>
+            <div class="hex-code">#5FAF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5faf87;"></div>
+            <div class="hex-code">#5FAF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fafaf;"></div>
+            <div class="hex-code">#5FAFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fafd7;"></div>
+            <div class="hex-code">#5FAFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fafff;"></div>
+            <div class="hex-code">#5FAFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fd700;"></div>
+            <div class="hex-code">#5FD700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fd75f;"></div>
+            <div class="hex-code">#5FD75F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fd787;"></div>
+            <div class="hex-code">#5FD787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fd7af;"></div>
+            <div class="hex-code">#5FD7AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fd7d7;"></div>
+            <div class="hex-code">#5FD7D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fd7ff;"></div>
+            <div class="hex-code">#5FD7FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fff00;"></div>
+            <div class="hex-code">#5FFF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fff5f;"></div>
+            <div class="hex-code">#5FFF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fff87;"></div>
+            <div class="hex-code">#5FFF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fffaf;"></div>
+            <div class="hex-code">#5FFFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fffd7;"></div>
+            <div class="hex-code">#5FFFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #5fffff;"></div>
+            <div class="hex-code">#5FFFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #870000;"></div>
+            <div class="hex-code">#870000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87005f;"></div>
+            <div class="hex-code">#87005F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #870087;"></div>
+            <div class="hex-code">#870087</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #8700af;"></div>
+            <div class="hex-code">#8700AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #8700d7;"></div>
+            <div class="hex-code">#8700D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #8700ff;"></div>
+            <div class="hex-code">#8700FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #875f00;"></div>
+            <div class="hex-code">#875F00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #875f5f;"></div>
+            <div class="hex-code">#875F5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #875f87;"></div>
+            <div class="hex-code">#875F87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #875faf;"></div>
+            <div class="hex-code">#875FAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #875fd7;"></div>
+            <div class="hex-code">#875FD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #875fff;"></div>
+            <div class="hex-code">#875FFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #878700;"></div>
+            <div class="hex-code">#878700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87875f;"></div>
+            <div class="hex-code">#87875F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #878787;"></div>
+            <div class="hex-code">#878787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #8787af;"></div>
+            <div class="hex-code">#8787AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #8787d7;"></div>
+            <div class="hex-code">#8787D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #8787ff;"></div>
+            <div class="hex-code">#8787FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87af00;"></div>
+            <div class="hex-code">#87AF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87af5f;"></div>
+            <div class="hex-code">#87AF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87af87;"></div>
+            <div class="hex-code">#87AF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87afaf;"></div>
+            <div class="hex-code">#87AFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87afd7;"></div>
+            <div class="hex-code">#87AFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87afff;"></div>
+            <div class="hex-code">#87AFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87d700;"></div>
+            <div class="hex-code">#87D700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87d75f;"></div>
+            <div class="hex-code">#87D75F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87d787;"></div>
+            <div class="hex-code">#87D787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87d7af;"></div>
+            <div class="hex-code">#87D7AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87d7d7;"></div>
+            <div class="hex-code">#87D7D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87d7ff;"></div>
+            <div class="hex-code">#87D7FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87ff00;"></div>
+            <div class="hex-code">#87FF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87ff5f;"></div>
+            <div class="hex-code">#87FF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87ff87;"></div>
+            <div class="hex-code">#87FF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87ffaf;"></div>
+            <div class="hex-code">#87FFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87ffd7;"></div>
+            <div class="hex-code">#87FFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #87ffff;"></div>
+            <div class="hex-code">#87FFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af0000;"></div>
+            <div class="hex-code">#AF0000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af005f;"></div>
+            <div class="hex-code">#AF005F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af0087;"></div>
+            <div class="hex-code">#AF0087</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af00af;"></div>
+            <div class="hex-code">#AF00AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af00d7;"></div>
+            <div class="hex-code">#AF00D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af00ff;"></div>
+            <div class="hex-code">#AF00FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af5f00;"></div>
+            <div class="hex-code">#AF5F00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af5f5f;"></div>
+            <div class="hex-code">#AF5F5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af5f87;"></div>
+            <div class="hex-code">#AF5F87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af5faf;"></div>
+            <div class="hex-code">#AF5FAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af5fd7;"></div>
+            <div class="hex-code">#AF5FD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af5fff;"></div>
+            <div class="hex-code">#AF5FFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af8700;"></div>
+            <div class="hex-code">#AF8700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af875f;"></div>
+            <div class="hex-code">#AF875F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af8787;"></div>
+            <div class="hex-code">#AF8787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af87af;"></div>
+            <div class="hex-code">#AF87AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af87d7;"></div>
+            <div class="hex-code">#AF87D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #af87ff;"></div>
+            <div class="hex-code">#AF87FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afaf00;"></div>
+            <div class="hex-code">#AFAF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afaf5f;"></div>
+            <div class="hex-code">#AFAF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afaf87;"></div>
+            <div class="hex-code">#AFAF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afafaf;"></div>
+            <div class="hex-code">#AFAFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afafd7;"></div>
+            <div class="hex-code">#AFAFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afafff;"></div>
+            <div class="hex-code">#AFAFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afd700;"></div>
+            <div class="hex-code">#AFD700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afd75f;"></div>
+            <div class="hex-code">#AFD75F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afd787;"></div>
+            <div class="hex-code">#AFD787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afd7af;"></div>
+            <div class="hex-code">#AFD7AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afd7d7;"></div>
+            <div class="hex-code">#AFD7D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afd7ff;"></div>
+            <div class="hex-code">#AFD7FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afff00;"></div>
+            <div class="hex-code">#AFFF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afff5f;"></div>
+            <div class="hex-code">#AFFF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afff87;"></div>
+            <div class="hex-code">#AFFF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afffaf;"></div>
+            <div class="hex-code">#AFFFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afffd7;"></div>
+            <div class="hex-code">#AFFFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #afffff;"></div>
+            <div class="hex-code">#AFFFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d70000;"></div>
+            <div class="hex-code">#D70000</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7005f;"></div>
+            <div class="hex-code">#D7005F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d70087;"></div>
+            <div class="hex-code">#D70087</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d700af;"></div>
+            <div class="hex-code">#D700AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d700d7;"></div>
+            <div class="hex-code">#D700D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d700ff;"></div>
+            <div class="hex-code">#D700FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d75f00;"></div>
+            <div class="hex-code">#D75F00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d75f5f;"></div>
+            <div class="hex-code">#D75F5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d75f87;"></div>
+            <div class="hex-code">#D75F87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d75faf;"></div>
+            <div class="hex-code">#D75FAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d75fd7;"></div>
+            <div class="hex-code">#D75FD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d75fff;"></div>
+            <div class="hex-code">#D75FFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d78700;"></div>
+            <div class="hex-code">#D78700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7875f;"></div>
+            <div class="hex-code">#D7875F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d78787;"></div>
+            <div class="hex-code">#D78787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d787af;"></div>
+            <div class="hex-code">#D787AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d787d7;"></div>
+            <div class="hex-code">#D787D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d787ff;"></div>
+            <div class="hex-code">#D787FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7af00;"></div>
+            <div class="hex-code">#D7AF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7af5f;"></div>
+            <div class="hex-code">#D7AF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7af87;"></div>
+            <div class="hex-code">#D7AF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7afaf;"></div>
+            <div class="hex-code">#D7AFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7afd7;"></div>
+            <div class="hex-code">#D7AFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7afff;"></div>
+            <div class="hex-code">#D7AFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7d700;"></div>
+            <div class="hex-code">#D7D700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7d75f;"></div>
+            <div class="hex-code">#D7D75F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7d787;"></div>
+            <div class="hex-code">#D7D787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7d7af;"></div>
+            <div class="hex-code">#D7D7AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7d7d7;"></div>
+            <div class="hex-code">#D7D7D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7d7ff;"></div>
+            <div class="hex-code">#D7D7FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7ff00;"></div>
+            <div class="hex-code">#D7FF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7ff5f;"></div>
+            <div class="hex-code">#D7FF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7ff87;"></div>
+            <div class="hex-code">#D7FF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7ffaf;"></div>
+            <div class="hex-code">#D7FFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7ffd7;"></div>
+            <div class="hex-code">#D7FFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d7ffff;"></div>
+            <div class="hex-code">#D7FFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff005f;"></div>
+            <div class="hex-code">#FF005F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff0087;"></div>
+            <div class="hex-code">#FF0087</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff00af;"></div>
+            <div class="hex-code">#FF00AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff00d7;"></div>
+            <div class="hex-code">#FF00D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff5f00;"></div>
+            <div class="hex-code">#FF5F00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff5f5f;"></div>
+            <div class="hex-code">#FF5F5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff5f87;"></div>
+            <div class="hex-code">#FF5F87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff5faf;"></div>
+            <div class="hex-code">#FF5FAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff5fd7;"></div>
+            <div class="hex-code">#FF5FD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff5fff;"></div>
+            <div class="hex-code">#FF5FFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff8700;"></div>
+            <div class="hex-code">#FF8700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff875f;"></div>
+            <div class="hex-code">#FF875F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff8787;"></div>
+            <div class="hex-code">#FF8787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff87af;"></div>
+            <div class="hex-code">#FF87AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff87d7;"></div>
+            <div class="hex-code">#FF87D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ff87ff;"></div>
+            <div class="hex-code">#FF87FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffaf00;"></div>
+            <div class="hex-code">#FFAF00</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffaf5f;"></div>
+            <div class="hex-code">#FFAF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffaf87;"></div>
+            <div class="hex-code">#FFAF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffafaf;"></div>
+            <div class="hex-code">#FFAFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffafd7;"></div>
+            <div class="hex-code">#FFAFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffafff;"></div>
+            <div class="hex-code">#FFAFFF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffd700;"></div>
+            <div class="hex-code">#FFD700</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffd75f;"></div>
+            <div class="hex-code">#FFD75F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffd787;"></div>
+            <div class="hex-code">#FFD787</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffd7af;"></div>
+            <div class="hex-code">#FFD7AF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffd7d7;"></div>
+            <div class="hex-code">#FFD7D7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffd7ff;"></div>
+            <div class="hex-code">#FFD7FF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffff5f;"></div>
+            <div class="hex-code">#FFFF5F</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffff87;"></div>
+            <div class="hex-code">#FFFF87</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffffaf;"></div>
+            <div class="hex-code">#FFFFAF</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #ffffd7;"></div>
+            <div class="hex-code">#FFFFD7</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #080808;"></div>
+            <div class="hex-code">#080808</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #121212;"></div>
+            <div class="hex-code">#121212</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #1c1c1c;"></div>
+            <div class="hex-code">#1C1C1C</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #262626;"></div>
+            <div class="hex-code">#262626</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #303030;"></div>
+            <div class="hex-code">#303030</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #3a3a3a;"></div>
+            <div class="hex-code">#3A3A3A</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #444444;"></div>
+            <div class="hex-code">#444444</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #4e4e4e;"></div>
+            <div class="hex-code">#4E4E4E</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #585858;"></div>
+            <div class="hex-code">#585858</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #626262;"></div>
+            <div class="hex-code">#626262</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #6c6c6c;"></div>
+            <div class="hex-code">#6C6C6C</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #767676;"></div>
+            <div class="hex-code">#767676</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #8a8a8a;"></div>
+            <div class="hex-code">#8A8A8A</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #949494;"></div>
+            <div class="hex-code">#949494</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #9e9e9e;"></div>
+            <div class="hex-code">#9E9E9E</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #a8a8a8;"></div>
+            <div class="hex-code">#A8A8A8</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #b2b2b2;"></div>
+            <div class="hex-code">#B2B2B2</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #bcbcbc;"></div>
+            <div class="hex-code">#BCBCBC</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #c6c6c6;"></div>
+            <div class="hex-code">#C6C6C6</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #d0d0d0;"></div>
+            <div class="hex-code">#D0D0D0</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #dadada;"></div>
+            <div class="hex-code">#DADADA</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #e4e4e4;"></div>
+            <div class="hex-code">#E4E4E4</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #eeeeee;"></div>
+            <div class="hex-code">#EEEEEE</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #010101;"></div>
+            <div class="hex-code">#010101</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #020202;"></div>
+            <div class="hex-code">#020202</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #030303;"></div>
+            <div class="hex-code">#030303</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #040404;"></div>
+            <div class="hex-code">#040404</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #050505;"></div>
+            <div class="hex-code">#050505</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #060606;"></div>
+            <div class="hex-code">#060606</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #070707;"></div>
+            <div class="hex-code">#070707</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #090909;"></div>
+            <div class="hex-code">#090909</div>
+        </div>
+        <div class="color-card">
+            <div class="swatch" style="background-color: #0a0a0a;"></div>
+            <div class="hex-code">#0A0A0A</div>
+        </div>
+    </div>
+</body>
+</html>
