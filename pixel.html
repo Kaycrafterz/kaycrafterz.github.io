@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaycrafter Pixel Art</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --panel-bg: #2d2d2d;
+            --text-color: #ffffff;
+            --accent-color: #00adb5;
+            --border-color: #444444;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 200px;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        label {
+            font-size: 14px;
+            color: #ccc;
+        }
+        input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: none;
+        }
+        select, input[type="number"], button {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background: #3d3d3d;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        select:focus, input:focus {
+            border-color: var(--accent-color);
+        }
+        button {
+            cursor: pointer;
+            background: var(--accent-color);
+            border: none;
+            font-weight: bold;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        button.secondary {
+            background: #555;
+        }
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .editor-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #222;
+            border: 2px dashed var(--border-color);
+            border-radius: 4px;
+            overflow: auto;
+            padding: 10px;
+        }
+        canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            cursor: crosshair;
+            background-image: 
+                linear-gradient(45deg, #ccc 25%, transparent 25%), 
+                linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #ccc 75%), 
+                linear-gradient(-45deg, transparent 75%, #ccc 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            background-color: #eee;
+        }
+        .tool-active {
+            box-shadow: 0 0 0 2px var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Kaycrafter Pixel Art</h1>
+
+    <div class="container">
+        <div class="controls-panel">
+            <div class="control-group">
+                <label>Размер сетки</label>
+                <select id="gridSize">
+                    <option value="8">8 x 8</option>
+                    <option value="16" selected>16 x 16</option>
+                    <option value="32">32 x 32</option>
+                    <option value="64">64 x 64</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Цвет кисти</label>
+                <input type="color" id="colorPicker" value="#00adb5">
+            </div>
+
+            <div class="control-group">
+                <label>Инструмент</label>
+                <div class="btn-group">
+                    <button id="toolDraw" class="tool-active">Карандаш</button>
+                    <button id="toolErase" class="secondary">Ластик</button>
+                </div>
+            </div>
+
+            <div class="control-group" style="margin-top: 10px;">
+                <button id="clearBtn" class="secondary">Очистить холст</button>
+            </div>
+
+            <div class="control-group" style="margin-top: auto;">
+                <label>Экспорт</label>
+                <div class="btn-group">
+                    <button id="exportPNG">PNG</button>
+                    <button id="exportSVG">SVG</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="editor-area">
+            <canvas id="pixelCanvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pixelCanvas');
+        const ctx = canvas.getContext('2d');
+        const gridSizeSelect = document.getElementById('gridSize');
+        const colorPicker = document.getElementById('colorPicker');
+        const toolDraw = document.getElementById('toolDraw');
+        const toolErase = document.getElementById('toolErase');
+        const clearBtn = document.getElementById('clearBtn');
+        const exportPNG = document.getElementById('exportPNG');
+        const exportSVG = document.getElementById('exportSVG');
+
+        const CANVAS_DISPLAY_SIZE = 512;
+        let gridSize = parseInt(gridSizeSelect.value);
+        let pixelSize = CANVAS_DISPLAY_SIZE / gridSize;
+        let currentTool = 'draw'; // 'draw' или 'erase'
+        let isDrawing = false;
+
+        // Инициализируем матрицу пикселей (храним цвета в формате RGBA или null)
+        let pixelMatrix = [];
+
+        function initGrid() {
+            gridSize = parseInt(gridSizeSelect.value);
+            pixelSize = CANVAS_DISPLAY_SIZE / gridSize;
+            canvas.width = CANVAS_DISPLAY_SIZE;
+            canvas.height = CANVAS_DISPLAY_SIZE;
+            
+            pixelMatrix = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
+            redrawCanvas();
+        }
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Отрисовка пикселей из матрицы
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    if (pixelMatrix[y][x]) {
+                        ctx.fillStyle = pixelMatrix[y][x];
+                        ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                    }
+                }
+            }
+
+            // Отрисовка тонкой сетки для удобства
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i <= gridSize; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * pixelSize, 0);
+                ctx.lineTo(i * pixelSize, canvas.height);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(0, i * pixelSize);
+                ctx.lineTo(canvas.width, i * pixelSize);
+                ctx.stroke();
+            }
+        }
+
+        function handlePointer(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((e.clientX - rect.left) / pixelSize);
+            const y = Math.floor((e.clientY - rect.top) / pixelSize);
+
+            if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+                if (currentTool === 'draw') {
+                    pixelMatrix[y][x] = colorPicker.value;
+                } else if (currentTool === 'erase') {
+                    pixelMatrix[y][x] = null;
+                }
+                redrawCanvas();
+            }
+        }
+
+        // События мыши
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            handlePointer(e);
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDrawing = false;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) handlePointer(e);
+        });
+
+        // Смена инструмента
+        toolDraw.addEventListener('click', () => {
+            currentTool = 'draw';
+            toolDraw.classList.add('tool-active');
+            toolErase.classList.remove('tool-active');
+        });
+
+        toolErase.addEventListener('click', () => {
+            currentTool = 'erase';
+            toolErase.classList.add('tool-active');
+            toolDraw.classList.remove('tool-active');
+        });
+
+        // Изменение размера сетки
+        gridSizeSelect.addEventListener('change', () => {
+            if (confirm('Изменение размера сетки очистит текущий рисунок. Продолжить?')) {
+                initGrid();
+            } else {
+                gridSizeSelect.value = gridSize;
+            }
+        });
+
+        // Очистить холст
+        clearBtn.addEventListener('click', () => {
+            if (confirm('Очистить холст?')) {
+                pixelMatrix = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
+                redrawCanvas();
+            }
+        });
+
+        // Экспорт в PNG (чистый пиксель-арт без сетки в оригинальном разрешении)
+        exportPNG.addEventListener('click', () => {
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = gridSize;
+            exportCanvas.height = gridSize;
+            const exportCtx = exportCanvas.getContext('2d');
+
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    if (pixelMatrix[y][x]) {
+                        exportCtx.fillStyle = pixelMatrix[y][x];
+                        exportCtx.fillRect(x, y, 1, 1);
+                    }
+                }
+            }
+
+            const link = document.createElement('a');
+            link.download = 'pixel-art.png';
+            link.href = exportCanvas.toDataURL('image/png');
+            link.click();
+        });
+
+        // Экспорт в SVG
+        exportSVG.addEventListener('click', () => {
+            let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${gridSize} ${gridSize}" width="512" height="512" shape-rendering="crispEdges">\n`;
+            
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    if (pixelMatrix[y][x]) {
+                        svgContent += `  <rect x="${x}" y="${y}" width="1" height="1" fill="${pixelMatrix[y][x]}" />\n`;
+                    }
+                }
+            }
+            svgContent += '</svg>';
+
+            const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'pixel-art.svg';
+            link.href = url;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        });
+
+        // Запуск
+        initGrid();
+    </script>
+</body>
+</html>
