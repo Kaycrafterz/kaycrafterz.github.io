@@ -1,32 +1,51 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 3.0//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://w3.org">
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>LegacyTube Kaycrafter</title>
 </head>
 <body>
 
-    <h1>Старый браузер?</h1>
-    
-    <p>Тогда вставьте ссылку на видео, поддерживаются только youtube.com, но не youtube.be</p>
+    <!-- Заголовок и описание -->
+    <h2>Старый браузер?</h2>
+    <p>Тогда введите полную ссылку на видео</p>
 
-    <!-- Форма отправляет пользователя на страницу встраивания, которая легче стандартной -->
-    <form action="http://youtube.com" method="GET">
-        <p>
-            ID видео (например, dQw4w9WgXcQ): <br>
-            <input type="text" name="v" size="40">
-        </p>
-        <p>
-            <input type="submit" value="Открыть видеоплеер">
-        </p>
+    <!-- Форма ввода -->
+    <form action="#" onsubmit="loadVideo(); return false;">
+        <input type="text" id="videoUrl" size="60" value="https://youtube.com">
+        <input type="submit" value="Воспроизвести">
     </form>
 
-    <hr>
+    <br><br>
 
-    <h2></h2>
-    <ul>
-        <li></li>
-        <li></li>
-    </ul>
+    <!-- Контейнер для плеера -->
+    <div id="playerContainer">
+        <!-- Сюда JavaScript вставит iframe -->
+    </div>
+
+    <!-- Логика работы на JavaScript -->
+    <script type="text/javascript">
+        function loadVideo() {
+            var url = document.getElementById('videoUrl').value;
+            var videoId = '';
+
+            // Регулярное выражение для поиска ID видео в разных типах ссылок YouTube
+            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = url.match(regExp);
+
+            if (match && match[2].length == 11) {
+                videoId = match[2];
+                
+                // Формируем HTML-код для iframe в стандарте HTML4
+                var iframeHtml = '<iframe width="640" height="360" src="https://youtube.com' + videoId + '" frameborder="0" allowfullscreen></iframe>';
+                
+                // Вставляем плеер на страницу
+                document.getElementById('playerContainer').innerHTML = iframeHtml;
+            } else {
+                alert('Пожалуйста, введите корректную ссылку на YouTube видео.');
+            }
+        }
+    </script>
 
 </body>
 </html>
