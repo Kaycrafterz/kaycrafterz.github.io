@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форматтер ника Kaycrafter</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --accent: #00f2fe;
+            --text: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #0f3460;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+        }
+
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nickname-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1f4068;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            border: none;
+            color: #1a1a2e;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            margin-left: 10px;
+            flex-shrink: 0;
+            transition: opacity 0.2s;
+        }
+
+        .copy-btn:hover {
+            opacity: 0.9;
+        }
+
+        .copy-btn.copied {
+            background: #4e9f3d;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <input type="text" id="nicknameInput" placeholder="Введите ваш ник..." maxlength="20" autocomplete="off">
+    <div class="results" id="resultsContainer"></div>
+</div>
+
+<script>
+    const input = document.getElementById('nicknameInput');
+    const container = document.getElementById('resultsContainer');
+
+    // Карта замены символов для стиля "Leet / Символы"
+    const leetMap = {
+        'a': '4', 'A': '4', 'e': '3', 'E': '3', 'i': '1', 'I': '1', 
+        'o': '0', 'O': '0', 's': '$', 'S': '$', 't': '7', 'T': '7',
+        'а': '4', 'А': '4', 'е': '3', 'Е': '3', 'о': '0', 'О': '0', 
+        'с': '¢', 'С': '¢', 'т': '7', 'Т': '7', 'в': '8', 'В': '8'
+    };
+
+    // Функции трансформации
+    const formatters = [
+        { name: "Символьный (Leet)", fn: text => text.split('').map(char => leetMap[char] || char).join('') },
+        { name: "Заборчик", fn: text => text.split('').map((char, i) => i % 2 === 0 ? char.toUpperCase() : char.toLowerCase()).join('') },
+        { name: "Азиатский стиль", fn: text => `꧁༺ ${text} ༻꧂` },
+        { name: "Кресты", fn: text => `☠︎☠︎☠︎ ${text} ☠︎☠︎☠︎` },
+        { name: "Стрелы", fn: text => `➴☠ ${text} ☠➶` },
+        { name: "Звездный", fn: text => `★ ${text} ★` },
+        { name: "С поцелуем", fn: text => `💋 ${text} 💋` },
+        { name: "Разреженный", fn: text => text.split('').join(' ') },
+        { name: "Снайпер", fn: text => `︻╦̵̵͇̿̿̿̿╤── ${text}` }
+    ];
+
+    function generateNicknames() {
+        const text = input.value.trim();
+        container.innerHTML = '';
+
+        if (!text) return;
+
+        formatters.forEach(style => {
+            const formattedText = style.fn(text);
+            
+            // Создаем элемент никнейма
+            const item = document.createElement('div');
+            item.className = 'nickname-item';
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = formattedText;
+            
+            const btn = document.createElement('button');
+            btn.className = 'copy-btn';
+            btn.textContent = 'Копировать';
+            
+            // Логика копирования в буфер обмена
+            btn.addEventListener('click', () => {
+                navigator.clipboard.writeText(formattedText).then(() => {
+                    btn.textContent = 'Готово!';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.textContent = 'Копировать';
+                        btn.classList.remove('copied');
+                    }, 1500);
+                });
+            });
+
+            item.appendChild(nameSpan);
+            item.appendChild(btn);
+            container.appendChild(item);
+        });
+    }
+
+    // Слушаем ввод пользователя
+    input.addEventListener('input', generateNicknames);
+</script>
+
+</body>
+</html>
