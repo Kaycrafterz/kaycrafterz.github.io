@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaycrafter Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .timer-container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .inputs {
+            margin-bottom: 20px;
+        }
+        .inputs input {
+            width: 60px;
+            padding: 8px;
+            font-size: 1rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .display {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            font-variant-numeric: tabular-nums;
+        }
+        button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-start { background-color: #28a745; color: white; }
+        .btn-start:hover { background-color: #218838; }
+        .btn-pause { background-color: #ffc107; color: #333; }
+        .btn-pause:hover { background-color: #e0a800; }
+        .btn-reset { background-color: #dc3545; color: white; }
+        .btn-reset:hover { background-color: #c82333; }
+    </style>
+</head>
+<body>
+
+    <div class="timer-container">
+        <!-- Ввод времени -->
+        <div class="inputs">
+            <label for="minutesInput">Минуты: </label>
+            <input type="number" id="minutesInput" min="1" max="600" value="5">
+        </div>
+
+        <!-- Табло таймера -->
+        <div class="display" id="display">05:00</div>
+        
+        <!-- Кнопки управления -->
+        <button class="btn-start" id="startBtn">Старт</button>
+        <button class="btn-pause" id="pauseBtn">Пауза</button>
+        <button class="btn-reset" id="resetBtn">Сброс</button>
+    </div>
+
+    <script>
+        let timeLeft = 300; // По умолчанию 5 минут (300 секунд)
+        let timerId = null;
+        let isPaused = true;
+
+        const display = document.getElementById('display');
+        const minutesInput = document.getElementById('minutesInput');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Функция обновления табло
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Функция генерации звука (Web Audio API)
+        function playAlarmSound() {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Создаем три последовательных пика
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    
+                    oscillator.type = 'sine'; // Тип звуковой волны
+                    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // Частота (нота Ля)
+                    
+                    // Плавное затухание звука, чтобы не было щелчков
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.4);
+                }, i * 500); // Интервал между гудками 0.5 секунды
+            }
+        }
+
+        // Слушатель изменения инпута
+        minutesInput.addEventListener('change', () => {
+            if (timerId === null && isPaused) {
+                let mins = parseInt(minutesInput.value) || 1;
+                if (mins < 1) mins = 1;
+                timeLeft = mins * 60;
+                updateDisplay();
+            }
+        });
+
+        // Логика запуска
+        startBtn.addEventListener('click', () => {
+            if (timerId !== null) return;
+
+            // Если запускаем заново после сброса или в первый раз, берем значение из инпута
+            if (isPaused && timeLeft === parseInt(minutesInput.value) * 60) {
+                let mins = parseInt(minutesInput.value) || 1;
+                timeLeft = mins * 60;
+            }
+            
+            isPaused = false;
+            minutesInput.disabled = true; // Блокируем ввод во время работы
+
+            timerId = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateDisplay();
+                } else {
+                    clearInterval(timerId);
+                    timerId = null;
+                    isPaused = true;
+                    minutesInput.disabled = false;
+                    playAlarmSound(); // Включаем звук
+                    setTimeout(() => alert('Время вышло!'), 100);
+                }
+            }, 1000);
+        });
+
+        // Логика паузы
+        pauseBtn.addEventListener('click', () => {
+            clearInterval(timerId);
+            timerId = null;
+        });
+
+        // Логика сброса
+        resetBtn.addEventListener('click', () => {
+            clearInterval(timerId);
+            timerId = null;
+            isPaused = true;
+            minutesInput.disabled = false;
+            
+            let mins = parseInt(minutesInput.value) || 1;
+            timeLeft = mins * 60;
+            updateDisplay();
+        });
+
+        // Инициализация
+        let initialMins = parseInt(minutesInput.value) || 5;
+        timeLeft = initialMins * 60;
+        updateDisplay();
+    </script>
+</body>
+</html>
