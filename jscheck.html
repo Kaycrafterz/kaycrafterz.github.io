@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка JS Kaycrafter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f2f5;
+        }
+        .status {
+            padding: 20px 40px;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .status {
+            background: #ffebe9;
+            color: #b31412;
+        }
+    </style>
+</head>
+<body>
+    <div id="js-status" class="status">
+        JavaScript ВЫКЛЮЧЕН, включён ли он в браузере? ❌
+    </div>
+
+    <script>
+
+        const statusBlock = document.getElementById('js-status');
+        statusBlock.textContent = 'JavaScript РАБОТАЕТ  ';
+        statusBlock.style.background = '#e6f4ea';
+        statusBlock.style.color = '#137333';
+    </script>
+
+</body>
+</html>
