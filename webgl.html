@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка WebGL (Kaycrafter)</title>
+    <style>
+        body {
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f4f4;
+            color: #333;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background: white;
+            padding: 24px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .label { font-weight: bold; color: #666; margin-bottom: 10px; font-size: 1.1em; }
+        .status { font-size: 1.2em; font-weight: bold; }
+        .success { color: #2e7d32; }
+        .warning { color: #f57c00; }
+        .error { color: #c62828; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="label">Статус WebGL:</div>
+        <div id="webgl-status" class="status">Проверка...</div>
+    </div>
+
+    <script>
+        function checkWebGL() {
+            const canvas = document.createElement('canvas');
+            
+            if (canvas.getContext('webgl2')) {
+                return '<span class="success">WebGL 2 поддерживается</span>';
+            }
+          
+            if (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')) {
+                return '<span class="warning">WebGL 1 поддерживается (WebGL 2 недоступен)</span>';
+            }
+
+            return '<span class="error">WebGL не поддерживается</span>';
+        }
+
+
+        document.getElementById('webgl-status').innerHTML = checkWebGL();
+    </script>
+
+</body>
+</html>
