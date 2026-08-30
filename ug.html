@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка User-Agent (Kaycrafter)</title>
+    <style>
+        body {
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f4f4;
+            color: #333;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #ua-box {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            word-break: break-all;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ua-box">Определение User-Agent...</div>
+
+    <script>
+        const userAgent = navigator.userAgent;
+        
+        document.getElementById('ua-box').textContent = userAgent;
+    </script>
+
+</body>
+</html>
